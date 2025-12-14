@@ -1,0 +1,27 @@
+{
+  "name": "bg-replace",
+  "version": "0.1.0",
+  "description": "Background replacement web application with Python ML backend",
+  "scripts": {
+    "install:all": "npm run install:system && npm run install:venv && npm run install:pytorch && npm run install:core && npm run install:dlib && npm run install:detectron2",
+    "install:system": "sudo apt update && sudo apt install -y python3 python3-venv python3-pip git cmake build-essential libatlas-base-dev libgtk-3-dev libopencv-dev ffmpeg",
+    "install:venv": "python3 -m venv bust_env && echo 'Virtual environment created. Activate with: source bust_env/bin/activate'",
+    "install:pytorch": "bash -c 'source bust_env/bin/activate && pip install --upgrade pip && pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu'",
+    "install:core": "bash -c 'source bust_env/bin/activate && pip install opencv-python mediapipe rembg[cpu] numpy pillow'",
+    "install:dlib": "bash -c 'source bust_env/bin/activate && pip install dlib'",
+    "install:detectron2": "bash -c 'source bust_env/bin/activate && git clone https://github.com/facebookresearch/detectron2.git && cd detectron2 && pip install --no-build-isolation -e . && cd ..'",
+    "dev:backend": "bash -c 'source bust_env/bin/activate && cd backend && python app.py'",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "npm run dev:backend"
+  },
+  "keywords": [
+    "background-removal",
+    "image-processing",
+    "ml",
+    "python",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC"
+}
