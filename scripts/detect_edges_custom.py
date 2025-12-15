@@ -61,66 +61,11 @@ def scan_edges_directional(input_path: str, output_svg: str, epsilon_factor=0.00
                 return False
         return True
     
-    # Scan from TOP (for each column, find first solid edge from top)
-    print("Scanning from top...")
-    for x in range(width):
-        found_phantom = False
-        found_edge = False
-        for y in range(height):
-            # Check if single pixel is a hard edge but not consecutive
-            if is_hard_edge(y, x) and not is_solid_edge(y, x, 1, 0):
-                found_phantom = True
-            elif is_solid_edge(y, x, 1, 0):
-                if found_phantom:
-                    phantom_count += 1
-                    print(f"  Phantom pixel at column {x}, skipped to solid edge at y={y}")
-                # Mark boundary pixel (one before solid edge)
-                edge_points.append((x, max(0, y - 1)))
-                found_edge = True
-                break
-        if not found_edge:
-            missing_edges += 1
+    # Scan from LEFT and RIGHT only (no top/bottom)
+    # This creates a complete outline by finding leftmost and rightmost edges for each row
     
-    # Scan from RIGHT (for each row, find first solid edge from right)
-    print("Scanning from right...")
-    for y in range(height):
-        found_phantom = False
-        found_edge = False
-        for x in range(width - 1, -1, -1):
-            if is_hard_edge(y, x) and not is_solid_edge(y, x, 0, -1):
-                found_phantom = True
-            elif is_solid_edge(y, x, 0, -1):
-                if found_phantom:
-                    phantom_count += 1
-                    print(f"  Phantom pixel at row {y}, skipped to solid edge at x={x}")
-                # Mark boundary pixel (one before solid edge)
-                edge_points.append((min(width - 1, x + 1), y))
-                found_edge = True
-                break
-        if not found_edge:
-            missing_edges += 1
-    
-    # Scan from BOTTOM (for each column, find first solid edge from bottom)
-    print("Scanning from bottom...")
-    for x in range(width - 1, -1, -1):
-        found_phantom = False
-        found_edge = False
-        for y in range(height - 1, -1, -1):
-            if is_hard_edge(y, x) and not is_solid_edge(y, x, -1, 0):
-                found_phantom = True
-            elif is_solid_edge(y, x, -1, 0):
-                if found_phantom:
-                    phantom_count += 1
-                    print(f"  Phantom pixel at column {x}, skipped to solid edge at y={y}")
-                # Mark boundary pixel (one before solid edge)
-                edge_points.append((x, min(height - 1, y + 1)))
-                found_edge = True
-                break
-        if not found_edge:
-            missing_edges += 1
-    
-    # Scan from LEFT (for each row, find first solid edge from left)
-    print("Scanning from left...")
+    # Scan from LEFT (bottom to top: for each row from bottom to top, find first solid edge from left)
+    print("Scanning from left (bottom to top)...")
     for y in range(height - 1, -1, -1):
         found_phantom = False
         found_edge = False
@@ -133,6 +78,25 @@ def scan_edges_directional(input_path: str, output_svg: str, epsilon_factor=0.00
                     print(f"  Phantom pixel at row {y}, skipped to solid edge at x={x}")
                 # Mark boundary pixel (one before solid edge)
                 edge_points.append((max(0, x - 1), y))
+                found_edge = True
+                break
+        if not found_edge:
+            missing_edges += 1
+    
+    # Scan from RIGHT (top to bottom: for each row from top to bottom, find first solid edge from right)
+    print("Scanning from right (top to bottom)...")
+    for y in range(height):
+        found_phantom = False
+        found_edge = False
+        for x in range(width - 1, -1, -1):
+            if is_hard_edge(y, x) and not is_solid_edge(y, x, 0, -1):
+                found_phantom = True
+            elif is_solid_edge(y, x, 0, -1):
+                if found_phantom:
+                    phantom_count += 1
+                    print(f"  Phantom pixel at row {y}, skipped to solid edge at x={x}")
+                # Mark boundary pixel (one before solid edge)
+                edge_points.append((min(width - 1, x + 1), y))
                 found_edge = True
                 break
         if not found_edge:
@@ -158,18 +122,7 @@ def scan_edges_directional(input_path: str, output_svg: str, epsilon_factor=0.00
     cv2.imwrite(debug_output, debug_image)
     print(f"✓ Saved debug image with red edge markers: {debug_output}")
     
-    # Sort points by angle from centroid to create simple polygon
-    edge_array = np.array(edge_points, dtype=np.float32)
-    centroid = edge_array.mean(axis=0)
-    
-    # Calculate angle from centroid to each point
-    angles = np.arctan2(edge_array[:, 1] - centroid[1], 
-                        edge_array[:, 0] - centroid[0])
-    
-    # Sort by angle to get points in order around the perimeter
-    sorted_indices = np.argsort(angles)
-    edge_points = [edge_points[i] for i in sorted_indices]
-    
+    # Use edge points as-is without sorting (they're already in scan order)
     # Convert to numpy array for contour processing
     points_array = np.array(edge_points, dtype=np.int32).reshape(-1, 1, 2)
     
