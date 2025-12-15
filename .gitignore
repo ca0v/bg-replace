@@ -51,6 +51,10 @@ models/
 .cache/
 *.weights
 
+# Datasets
+data/img_align_celeba/
+data/*.zip
+
 # IDE
 .vscode/
 .idea/

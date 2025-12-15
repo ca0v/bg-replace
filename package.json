@@ -16,7 +16,8 @@
     "start": "npm run dev:backend",
     "test:bg-simple": "bash -c 'source bust_env/bin/activate && python scripts/remove_bg_simple.py'",
     "test:bg-advanced": "bash -c 'source bust_env/bin/activate && python scripts/remove_bg_advanced.py'",
-    "test:bg": "npm run test:bg-simple"
+    "test:bg": "npm run test:bg-simple",
+    "setup:celeba": "bash -c 'source bust_env/bin/activate && python scripts/setup_celeba.py'"
   },
   "keywords": [
     "background-removal",
