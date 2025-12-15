@@ -166,7 +166,9 @@
                 
                 // Get image dimensions
                 const img = document.getElementById('mainImage');
-                img.onload = function() {
+                
+                // Function to setup SVG once image is ready
+                const setupSVG = () => {
                     const svg = document.getElementById('overlay');
                     svg.setAttribute('viewBox', `0 0 ${img.naturalWidth} ${img.naturalHeight}`);
                     
@@ -183,6 +185,13 @@
                     // Setup controls
                     setupControls(overlayPolygon);
                 };
+                
+                // Check if image is already loaded
+                if (img.complete && img.naturalWidth > 0) {
+                    setupSVG();
+                } else {
+                    img.onload = setupSVG;
+                }
                 
             } catch (error) {
                 console.error('Error loading SVG:', error);
