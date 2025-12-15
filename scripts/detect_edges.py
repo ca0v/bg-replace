@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 import sys
 
-def detect_edges_to_polygon(input_path: str, output_svg: str, epsilon_factor=0.005):
+def detect_edges_to_polygon(input_path: str, output_svg: str, epsilon_factor=0.0025):
     """
     Detect edges and create a simplified polygon from transparent image.
     
@@ -38,8 +38,17 @@ def detect_edges_to_polygon(input_path: str, output_svg: str, epsilon_factor=0.0
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         _, alpha = cv2.threshold(gray, 1, 255, cv2.THRESH_BINARY)
     
-    # Find contours
-    contours, _ = cv2.findContours(alpha, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # Ensure we capture all non-transparent pixels accurately
+    # Use a very low threshold to detect any non-zero alpha
+    _, binary_mask = cv2.threshold(alpha, 1, 255, cv2.THRESH_BINARY)
+    
+    # Optional: Apply slight morphological closing to connect nearby pixels
+    # This helps with any small gaps in the alpha channel
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+    binary_mask = cv2.morphologyEx(binary_mask, cv2.MORPH_CLOSE, kernel, iterations=1)
+    
+    # Find contours - use CHAIN_APPROX_NONE to capture all boundary pixels
+    contours, _ = cv2.findContours(binary_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     
     if not contours:
         print("Error: No contours found")
@@ -57,15 +66,28 @@ def detect_edges_to_polygon(input_path: str, output_svg: str, epsilon_factor=0.0
     # Convert to polygon points
     points = simplified_contour.reshape(-1, 2)
     
-    # Generate SVG
-    svg_points = " ".join([f"{x},{y}" for x, y in points])
+    # Normalize coordinates to 0-100 range
+    normalized_points = []
+    for x, y in points:
+        norm_x = (x / width) * 100
+        norm_y = (y / height) * 100
+        normalized_points.append((norm_x, norm_y))
+    
+    # Generate SVG with normalized coordinates
+    svg_points = " ".join([f"{x:.2f},{y:.2f}" for x, y in normalized_points])
+    
+    # Generate circle elements for each vertex (normalized coordinates)
+    circles = "\n  ".join([f'<circle cx="{x:.2f}" cy="{y:.2f}" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>' 
+                           for x, y in normalized_points])
     
     svg_content = f'''<?xml version="1.0" encoding="UTF-8"?>
-<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
+<svg width="{width}" height="{height}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
   <polygon points="{svg_points}" 
            fill="none" 
            stroke="red" 
-           stroke-width="2"/>
+           stroke-width="0.5"
+           vector-effect="non-scaling-stroke"/>
+  {circles}
 </svg>'''
     
     # Save SVG

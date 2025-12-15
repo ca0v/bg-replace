@@ -31,6 +31,13 @@
             display: inline-block;
             margin: 20px 0;
             border: 2px solid #ddd;
+            background-image:
+                linear-gradient(45deg, #ccc 25%, transparent 25%),
+                linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #ccc 75%),
+                linear-gradient(-45deg, transparent 75%, #ccc 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
         }
         
         .viewer img {
@@ -153,37 +160,38 @@
                 const response = await fetch('mugshot1_no_bg.svg');
                 const svgText = await response.text();
                 
-                // Parse SVG to get polygon points
+                // Parse SVG
                 const parser = new DOMParser();
                 const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
-                const polygon = svgDoc.querySelector('polygon');
+                const svgElement = svgDoc.querySelector('svg');
                 
-                if (!polygon) {
-                    throw new Error('No polygon found in SVG');
+                if (!svgElement) {
+                    throw new Error('No SVG element found in file');
                 }
                 
-                const points = polygon.getAttribute('points');
-                
-                // Get image dimensions
+                // Get image to sync dimensions
                 const img = document.getElementById('mainImage');
                 
                 // Function to setup SVG once image is ready
                 const setupSVG = () => {
-                    const svg = document.getElementById('overlay');
-                    svg.setAttribute('viewBox', `0 0 ${img.naturalWidth} ${img.naturalHeight}`);
+                    const overlay = document.getElementById('overlay');
                     
-                    // Create polygon in overlay
-                    const overlayPolygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-                    overlayPolygon.setAttribute('points', points);
-                    overlayPolygon.setAttribute('fill', 'none');
-                    overlayPolygon.setAttribute('stroke', '#ff0000');
-                    overlayPolygon.setAttribute('stroke-width', '2');
-                    overlayPolygon.setAttribute('vector-effect', 'non-scaling-stroke');
+                    // Copy all attributes from loaded SVG
+                    Array.from(svgElement.attributes).forEach(attr => {
+                        overlay.setAttribute(attr.name, attr.value);
+                    });
                     
-                    svg.appendChild(overlayPolygon);
+                    // Copy all child elements (polygon, circles, etc.)
+                    while (svgElement.firstChild) {
+                        overlay.appendChild(svgElement.firstChild);
+                    }
                     
-                    // Setup controls
-                    setupControls(overlayPolygon);
+                    // Setup controls for the polygon
+                    const polygon = overlay.querySelector('polygon');
+                    const circles = overlay.querySelectorAll('circle');
+                    if (polygon) {
+                        setupControls(polygon, circles);
+                    }
                 };
                 
                 // Check if image is already loaded
@@ -204,7 +212,7 @@
             }
         }
         
-        function setupControls(polygon) {
+        function setupControls(polygon, circles) {
             const strokeColor = document.getElementById('strokeColor');
             const strokeWidth = document.getElementById('strokeWidth');
             const opacity = document.getElementById('opacity');
@@ -225,7 +233,8 @@
             
             // Width control
             strokeWidth.addEventListener('input', (e) => {
-                polygon.setAttribute('stroke-width', e.target.value);
+                const width = parseFloat(e.target.value) * 0.25; // Scale for normalized coordinates
+                polygon.setAttribute('stroke-width', width);
                 document.getElementById('widthValue').textContent = e.target.value;
             });
             
@@ -242,8 +251,10 @@
                 if (fillEnabled) {
                     polygon.setAttribute('fill', strokeColor.value);
                     polygon.setAttribute('fill-opacity', '0.3');
+                    circles.forEach(c => c.style.display = 'none');
                 } else {
                     polygon.setAttribute('fill', 'none');
+                    circles.forEach(c => c.style.display = '');
                 }
             });
             
