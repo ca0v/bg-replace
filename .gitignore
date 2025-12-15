@@ -88,11 +88,6 @@ coverage.xml
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Backend static files (generated from frontend build)
-backend/static/index.html
-backend/static/index.js
-backend/static/styles.css
-
 # Temporary files
 *.tmp
 *.bak
