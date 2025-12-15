@@ -11,28 +11,42 @@ import numpy as np
 from pathlib import Path
 import io
 import base64
-from rembg import remove
+import mediapipe as mp
 from PIL import Image
 
 app = Flask(__name__, static_folder='static')
 CORS(app)
 
+# Initialize MediaPipe Selfie Segmentation
+mp_selfie_segmentation = mp.solutions.selfie_segmentation
+segmenter = mp_selfie_segmentation.SelfieSegmentation(model_selection=1)
+
 def remove_background(image_bytes):
-    """Remove background from image bytes using rembg"""
+    """Remove background from image bytes using MediaPipe"""
+    # Load image
     input_image = Image.open(io.BytesIO(image_bytes))
-    output_image = remove(input_image)
+    img_rgb = np.array(input_image.convert('RGB'))
     
-    # Convert to numpy array for further processing
-    img_array = np.array(output_image)
+    # Process with MediaPipe (expects RGB)
+    results = segmenter.process(img_rgb)
+    
+    # Create mask (segmentation_mask is between 0 and 1)
+    mask = (results.segmentation_mask > 0.5).astype(np.uint8) * 255
+    
+    # Add alpha channel to RGB image
+    img_rgba = np.dstack((img_rgb, mask))
+    
+    # Convert back to PIL for saving
+    output_image = Image.fromarray(img_rgba, 'RGBA')
     
     # Save to bytes
     output_buffer = io.BytesIO()
     output_image.save(output_buffer, format='PNG')
     output_buffer.seek(0)
     
-    return output_buffer.getvalue(), img_array
+    return output_buffer.getvalue(), img_rgba
 
-def detect_edges(image_array, epsilon_factor=0.004):
+def detect_edges(image_array, epsilon_factor=0.002):
     """
     Detect edges using directional scanning (left and right)
     Returns SVG string with normalized coordinates

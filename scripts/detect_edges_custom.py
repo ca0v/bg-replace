@@ -10,7 +10,7 @@ import numpy as np
 from pathlib import Path
 import sys
 
-def scan_edges_directional(input_path: str, output_svg: str, epsilon_factor=0.004):
+def scan_edges_directional(input_path: str, output_svg: str, epsilon_factor=0.002):
     """
     Scan from 4 directions to find edge pixels and create polygon.
     
