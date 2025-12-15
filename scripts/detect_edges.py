@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 import sys
 
-def detect_edges_to_polygon(input_path: str, output_svg: str, epsilon_factor=0.0025):
+def detect_edges_to_polygon(input_path: str, output_svg: str, epsilon_factor=0.004):
     """
     Detect edges and create a simplified polygon from transparent image.
     
@@ -47,8 +47,8 @@ def detect_edges_to_polygon(input_path: str, output_svg: str, epsilon_factor=0.0
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     binary_mask = cv2.morphologyEx(binary_mask, cv2.MORPH_CLOSE, kernel, iterations=1)
     
-    # Find contours - use CHAIN_APPROX_NONE to capture all boundary pixels
-    contours, _ = cv2.findContours(binary_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    # Find contours - use CHAIN_APPROX_SIMPLE to capture corner points only
+    contours, _ = cv2.findContours(binary_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     if not contours:
         print("Error: No contours found")
