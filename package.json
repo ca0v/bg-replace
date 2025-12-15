@@ -19,6 +19,8 @@
     "test:bg-improved": "bash -c 'source bust_env/bin/activate && python scripts/remove_bg_improved.py'",
     "test:bg": "npm run test:bg-simple",
     "test:bg:random": "bash -c 'RANDOM_IMG=$(find ./data/img_align_celeba -name \"*.jpg\" -type f | shuf -n 1) && echo \"Selected: $(basename \"$RANDOM_IMG\")\" && cp \"$RANDOM_IMG\" ./mugshot1.png && npm run test:bg'",
+    "detect:edges": "bash -c 'source bust_env/bin/activate && python scripts/detect_edges.py'",
+    "view:edges": "bash -c 'python3 -m http.server 8080 &> /dev/null & sleep 1 && echo \"Opening http://localhost:8080/edge_viewer.html\" && xdg-open http://localhost:8080/edge_viewer.html 2>/dev/null || open http://localhost:8080/edge_viewer.html 2>/dev/null || echo \"Open http://localhost:8080/edge_viewer.html in your browser\"'",
     "setup:celeba": "bash -c 'source bust_env/bin/activate && python scripts/setup_celeba.py'"
   },
   "keywords": [
