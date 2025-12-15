@@ -252,7 +252,50 @@ Push changes to https://github.com/ca0v/bg-replace
 
 **Expected Output**: Repository initialized and pushed to GitHub
 
+### Prompt 32: Full Application Implementation
+```
+You now have enough information to implement the application. The user drops a mugshot into the left/receiving photo, the browser renders the image, sends it to the server which does a background removal and edge detection and responds with the new image and svg outline.
+```
+
+**Expected Output**:
+- backend/app.py: Flask server with /api/process endpoint
+- backend/static/index.html: Drag-and-drop interface
+- backend/static/styles.css: Modern gradient design
+- backend/static/app.js: Client-side logic (fetch API, image handling, controls)
+- Updated package.json with "start" script
+- Flask and Flask-CORS installed
+- Server running at http://localhost:5000
+
 ---
+
+## Phase 5: Application Completion
+
+### Complete Application Features
+
+**Backend (Flask)**:
+- `/api/process` endpoint accepts multipart/form-data
+- Background removal using rembg
+- Edge detection using custom directional scanning
+- Returns JSON with base64 image and SVG
+- Static file serving for frontend
+- CORS enabled for development
+
+**Frontend (Vanilla JS)**:
+- Drag & drop or click to upload
+- Shows original image (left panel)
+- Sends to server via fetch API
+- Displays processed image + SVG overlay (right panel)
+- Interactive controls: toggle outline, stroke color, stroke width
+- Download processed image
+- Reset functionality
+- Status updates (processing/success/error)
+
+**Key Implementation Details**:
+- Image encoding: base64 for network transfer
+- SVG overlay: Absolute positioning over processed image
+- Checkerboard background: CSS gradients for transparency visualization
+- Error handling: Try-catch with user feedback
+- File validation: Type and size checks (10MB max)
 
 ## Key Implementation Details
 
@@ -272,6 +315,13 @@ Push changes to https://github.com/ca0v/bg-replace
 
 ### File Structure
 ```
+backend/
+  - app.py (Flask server with /api/process endpoint)
+  - static/
+    - index.html (drag-and-drop UI)
+    - styles.css (gradient design)
+    - app.js (vanilla JavaScript)
+
 scripts/
   - remove_bg_simple.py (rembg basic)
   - remove_bg_advanced.py (3 methods comparison)
@@ -281,7 +331,7 @@ scripts/
   - setup_celeba.py (dataset management)
 
 edge_viewer.html (interactive visualization)
-package.json (npm-run-all scripts)
+package.json (npm-run-all scripts + start)
 ```
 
 ---
@@ -292,7 +342,11 @@ package.json (npm-run-all scripts)
 2. Execute Prompts 3-6 for environment setup
 3. Run Prompts 7-12 for background removal implementation
 4. Execute Prompts 13-30 iteratively for edge detection refinement
-5. Each prompt builds on the previous state - maintain context between prompts
+5. Execute Prompt 31 for repository setup
+6. Execute Prompt 32 for full application implementation
+7. Run `npm start` to launch the application
+
+Each prompt builds on the previous state - maintain context between prompts.
 
 ## Notes for Future Development
 

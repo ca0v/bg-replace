@@ -132,81 +132,156 @@ npm install -g esbuild  # or webpack, rollup for bundling
 | Component | Technology |
 |-----------|-----------|
 | Frontend UI | HTML5 + CSS3 |
-| Frontend Logic | TypeScript → JavaScript (bundled) |
-| Web Server | Python Flask or FastAPI |
-| Backend Processing | Python 3.10+ |
-| ML Frameworks | PyTorch, Detectron2, MediaPipe |
-| Background Removal | rembg (U2-Net), Detectron2 |
-| Image Processing | OpenCV, Pillow |
-| Communication | HTTP REST API |
+| Frontend Logic | Vanilla JavaScript |
+| Web Server | Python Flask 3.1+ |
+| Backend Processing | Python 3.12 |
+| ML Frameworks | PyTorch 2.9.1, Detectron2 0.6, MediaPipe 0.10 |
+| Background Removal | rembg 2.0.69 (U2-Net) |
+| Image Processing | OpenCV 4.12, Pillow 12.0, NumPy 2.2 |
+| Edge Detection | Custom directional scanning algorithm |
+| Communication | HTTP REST API (JSON + base64) |
+
+## API Endpoints
+
+### POST /api/process
+Processes an uploaded image with background removal and edge detection.
+
+**Request:**
+- Method: `POST`
+- Content-Type: `multipart/form-data`
+- Body: `image` file field
+
+**Response:**
+```json
+{
+  "success": true,
+  "image": "data:image/png;base64,...",
+  "svg": "<svg>...</svg>",
+  "vertices": 20
+}
+```
+
+### GET /
+Serves the main application interface.
+
+### GET /health
+Health check endpoint returning service status.
 
 ## Development Roadmap
 
-1. **Setup Development Environment**
-   - Install Python dependencies using provided script in WSL2
-   - Install Node.js and TypeScript tooling
-   - Setup project structure
+1. ✅ **Setup Development Environment**
+   - Installed Python dependencies using npm scripts in WSL2
+   - Setup project structure with backend/ and scripts/
 
-2. **Build Python Backend**
-   - Create FastAPI/Flask service for background removal
-   - Implement background removal pipeline
-   - Add API endpoints for image processing
-   - Configure static file serving for web assets
+2. ✅ **Build Python Backend**
+   - Created Flask service for background removal
+   - Implemented background removal pipeline with rembg
+   - Added /api/process endpoint for image processing
+   - Configured static file serving for web assets
 
-3. **Build Frontend**
-   - Create HTML structure with drag-and-drop zones
-   - Style with CSS (single stylesheet)
-   - Implement TypeScript modules for:
-     - File upload handling
-     - API client
+3. ✅ **Build Frontend**
+   - Created HTML structure with drag-and-drop zones
+   - Styled with CSS (gradient design, responsive)
+   - Implemented vanilla JavaScript for:
+     - File upload handling (drag & drop + click)
+     - API client with fetch
      - Image display management
-     - UI interactions
-   - Setup build pipeline (TypeScript → bundled index.js)
+     - UI interactions and controls
 
-4. **Integration & Testing**
-   - Connect frontend to backend API
-   - Performance optimization
+4. ✅ **Integration & Testing**
+   - Connected frontend to backend API
    - Error handling and user feedback
-   - Cross-browser testing
+   - Status updates during processing
+   - Interactive edge visualization controls
 
-5. **Deployment**
-   - Build production assets
-   - Configure production server
-   - Optional: Docker containerization
+5. 🚧 **Deployment** (Next Steps)
+   - Build production configuration
+   - Docker containerization
    - Optional: Cloud deployment (AWS, Azure, GCP)
+   - Performance optimization with caching
 
-## Project Structure (Planned)
+## Project Structure
 
 ```
 bg-replace/
-├── frontend/              # TypeScript/HTML Frontend
-│   ├── src/
-│   │   ├── main.ts       # Entry point
-│   │   ├── api-client.ts # Backend API client
-│   │   ├── image-handler.ts
-│   │   └── ui-controller.ts
-│   ├── public/
-│   │   ├── index.html    # Single page application
-│   │   └── styles.css    # Single stylesheet
-│   ├── dist/
-│   │   └── index.js      # Bundled output
-│   ├── tsconfig.json
-│   └── package.json
 ├── backend/               # Python Processing Service + Web Server
-│   ├── app.py            # FastAPI/Flask app
-│   ├── processors/       # Background removal modules
-│   │   ├── rembg_processor.py
-│   │   ├── detectron_processor.py
-│   │   └── mediapipe_processor.py
-│   ├── static/           # Served frontend assets
-│   │   ├── index.html
-│   │   ├── styles.css
-│   │   └── index.js
-│   ├── requirements.txt
-│   └── models/           # Pre-trained model weights
-├── install_dependencies.sh
-└── README.md
+│   ├── app.py            # Flask application with REST API
+│   └── static/           # Served frontend assets
+│       ├── index.html    # Single page application
+│       ├── styles.css    # Styling with gradient design
+│       └── app.js        # Client-side logic (vanilla JS)
+├── scripts/              # Background removal & edge detection
+│   ├── remove_bg_simple.py       # Basic rembg
+│   ├── remove_bg_advanced.py     # 3 methods comparison
+│   ├── remove_bg_improved.py     # 4 enhanced methods
+│   ├── detect_edges.py           # OpenCV contour detection
+│   ├── detect_edges_custom.py    # Directional scanning (FINAL)
+│   └── setup_celeba.py           # Dataset management
+├── edge_viewer.html      # Development visualization tool
+├── package.json          # npm scripts for installation & testing
+├── .gitignore           # Excludes bust_env/, data/, models/
+├── README.md            # This file
+├── PROMPT.md            # AI prompt progression documentation
+└── bust_env/            # Python virtual environment (gitignored)
 ```
+
+## Quick Start
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/ca0v/bg-replace.git
+cd bg-replace
+
+# Install dependencies (requires WSL2/Ubuntu)
+npm run install:all
+
+# Download CelebA dataset (optional, for testing)
+npm run setup:celeba
+```
+
+### Running the Application
+```bash
+# Start the Flask server
+npm start
+
+# Server runs at http://localhost:5000
+# Open in your browser and drop an image!
+```
+
+### Testing Edge Detection (Standalone)
+```bash
+# Test with random CelebA image
+npm test
+
+# View results in browser
+npm run view:edges
+```
+
+## Features Implemented
+
+### ✅ Phase 1: Core Functionality
+- [x] Drag-and-drop interface
+- [x] Python Flask backend with REST API
+- [x] Background removal using rembg
+- [x] Side-by-side image comparison view
+- [x] Download processed image
+- [x] Custom edge detection with directional scanning
+- [x] Interactive SVG overlay visualization
+- [x] Real-time processing status
+
+### 🚧 Phase 2: Enhanced Features (Planned)
+- [ ] Multiple background removal models (rembg, MediaPipe, Detectron2)
+- [ ] Custom background color selection
+- [ ] Custom background image replacement
+- [ ] Edge refinement options
+- [ ] Batch processing
+
+### 💡 Phase 3: Advanced Features (Planned)
+- [ ] Real-time preview
+- [ ] Background blur/bokeh effect
+- [ ] Portrait enhancement filters
+- [ ] Cloud processing option for heavy workloads
 
 ## License
 
