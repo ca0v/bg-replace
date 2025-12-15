@@ -8,6 +8,7 @@ const resultZone = document.getElementById('resultZone');
 const resultPlaceholder = document.getElementById('resultPlaceholder');
 const resultContainer = document.getElementById('resultContainer');
 const processedImage = document.getElementById('processedImage');
+const backgroundImage = document.getElementById('backgroundImage');
 const svgOverlay = document.getElementById('svgOverlay');
 const status = document.getElementById('status');
 const controls = document.getElementById('controls');
@@ -125,6 +126,9 @@ function displayResult(result) {
     resultPlaceholder.style.display = 'none';
     resultContainer.style.display = 'flex';
     
+    // Set background image (original at 50% opacity)
+    backgroundImage.src = originalImage.src;
+    
     // Set processed image
     processedImage.src = result.image;
     
@@ -217,6 +221,7 @@ resetBtn.addEventListener('click', () => {
     resultPlaceholder.innerHTML = '<p>Processed image will appear here</p>';
     resultContainer.style.display = 'none';
     processedImage.src = '';
+    backgroundImage.src = '';
     
     controls.style.display = 'none';
     currentSvgContent = null;

@@ -148,6 +148,23 @@ header p {
     justify-content: center;
 }
 
+.result-container .preview-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.background-image {
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.result-container #processedImage {
+    z-index: 2;
+}
+
 .svg-overlay {
     position: absolute;
     top: 0;
@@ -155,6 +172,8 @@ header p {
     width: 100%;
     height: 100%;
     pointer-events: none;
+    z-index: 3;
+    opacity: 1;
 }
 
 .controls {

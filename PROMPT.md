@@ -330,8 +330,51 @@ scripts/
   - detect_edges_custom.py (directional scan - FINAL)
   - setup_celeba.py (dataset management)
 
-edge_viewer.html (interactive visualization)
-package.json (npm-run-all scripts + start)
+## Phase 8: UI Refinement
+
+### Prompt 33: Background Layer
+```
+Render a second copy of the original image behind the processed image, but render it with 50% opacity
+```
+
+**Expected Output**: 
+- Updated index.html with background image element
+- Updated styles.css with layered positioning (background at 50% opacity, processed image, SVG overlay)
+- Updated app.js to populate background image source
+- Z-index layering: background (z-index: 1, opacity: 0.5), processed (z-index: 2), SVG (z-index: 3)
+
+### Prompt 34: SVG Opacity Fix
+```
+Seems like the svg opacity changed, it should remain 100%
+```
+
+**Expected Output**: 
+- Updated styles.css with explicit `opacity: 1` and `z-index: 3` on .svg-overlay
+- SVG remains fully opaque on top of layered images
+
+---
+
+## Repository Structure (Final)
+
+```
+bg-replace/
+├── backend/
+│   ├── app.py (Flask server with /api/process endpoint)
+│   └── static/
+│       ├── index.html (drag-and-drop UI with layered images)
+│       ├── app.js (fetch API + image layering)
+│       └── styles.css (gradient design with z-index layers)
+├── scripts/
+│   ├── remove_bg_simple.py
+│   ├── remove_bg_advanced.py
+│   ├── remove_bg_improved.py
+│   ├── detect_edges.py
+│   ├── detect_edges_custom.py (directional scan - FINAL)
+│   └── setup_celeba.py (dataset management)
+├── edge_viewer.html (interactive visualization)
+├── package.json (npm-run-all scripts + start)
+├── PROMPT.md (this file)
+└── README.md (project documentation)
 ```
 
 ---
@@ -344,7 +387,8 @@ package.json (npm-run-all scripts + start)
 4. Execute Prompts 13-30 iteratively for edge detection refinement
 5. Execute Prompt 31 for repository setup
 6. Execute Prompt 32 for full application implementation
-7. Run `npm start` to launch the application
+7. Execute Prompts 33-34 for UI layering refinement
+8. Run `npm start` to launch the application
 
 Each prompt builds on the previous state - maintain context between prompts.
 
@@ -355,6 +399,7 @@ Each prompt builds on the previous state - maintain context between prompts.
 - Scanning direction matters for polygon vertex ordering
 - Phantom pixel detection prevents artifacts from anti-aliasing
 - Debug visualizations (red pixels, edge markers) were crucial for tuning
+- Image layering: Background (50% opacity) → Processed → SVG overlay (100% opacity)
 
 ## Extension Opportunities
 
@@ -363,5 +408,5 @@ Based on this foundation, future prompts could explore:
 - Background replacement with texture mapping
 - Real-time video processing
 - GPU acceleration for batch processing
-- FastAPI/Flask backend integration
-- React/Vue frontend implementation
+- Additional background options (solid colors, patterns, gradients)
+- Adjustable opacity controls for background layer
