@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="178" height="218" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-  <polygon points="35.39,11.47 46.07,8.26 58.99,8.26 75.28,14.68 83.71,23.85 91.57,38.99 98.31,75.69 96.63,86.24 99.44,93.12 97.19,99.54 33.71,99.54 35.39,94.50 33.15,99.54 0.00,98.62 0.00,85.32 4.49,82.57 0.00,84.86 6.18,81.19 0.00,84.40 8.43,78.44 0.56,74.31 7.87,44.50 22.47,22.94" 
+  <polygon points="32.58,14.68 61.80,7.80 86.52,22.94 89.89,50.46 80.34,65.14 99.44,99.54 19.66,99.54 37.08,80.28 19.10,99.54 37.64,79.36 17.98,99.54 37.64,78.90 17.42,99.54 38.20,77.98 15.17,99.54 37.64,77.52 14.04,99.54 37.64,77.06 12.92,99.54 37.64,76.61 10.11,99.54 37.08,76.15 10.11,99.08 37.08,75.69 22.47,29.36" 
            fill="none" 
            stroke="red" 
            stroke-width="0.5"
            vector-effect="non-scaling-stroke"/>
-  <circle cx="35.39" cy="11.47" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="46.07" cy="8.26" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="58.99" cy="8.26" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="75.28" cy="14.68" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="83.71" cy="23.85" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="91.57" cy="38.99" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="98.31" cy="75.69" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="96.63" cy="86.24" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="99.44" cy="93.12" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="97.19" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="33.71" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="35.39" cy="94.50" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="33.15" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="0.00" cy="98.62" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="0.00" cy="85.32" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="4.49" cy="82.57" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="0.00" cy="84.86" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="6.18" cy="81.19" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="0.00" cy="84.40" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="8.43" cy="78.44" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="0.56" cy="74.31" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="7.87" cy="44.50" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
-  <circle cx="22.47" cy="22.94" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="32.58" cy="14.68" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="61.80" cy="7.80" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="86.52" cy="22.94" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="89.89" cy="50.46" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="80.34" cy="65.14" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="99.44" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="19.66" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.08" cy="80.28" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="19.10" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.64" cy="79.36" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="17.98" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.64" cy="78.90" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="17.42" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="38.20" cy="77.98" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="15.17" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.64" cy="77.52" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="14.04" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.64" cy="77.06" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="12.92" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.64" cy="76.61" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="10.11" cy="99.54" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.08" cy="76.15" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="10.11" cy="99.08" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="37.08" cy="75.69" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
+  <circle cx="22.47" cy="29.36" r="1.5" fill="white" stroke="black" stroke-width="0.3"/>
 </svg>

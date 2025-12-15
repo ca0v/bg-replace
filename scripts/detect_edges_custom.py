@@ -46,17 +46,12 @@ def scan_edges_directional(input_path: str, output_svg: str, epsilon_factor=0.00
     
     # Thresholds for hard edges
     ALPHA_THRESHOLD = 240  # Strong opacity (out of 255)
-    COLOR_THRESHOLD = 30   # Minimum color intensity
     
     def is_hard_edge(y, x):
-        """Check if pixel has strong color and opacity (hard edge)"""
+        """Check if pixel has strong opacity (hard edge)"""
         if y < 0 or y >= height or x < 0 or x >= width:
             return False
-        if alpha[y, x] < ALPHA_THRESHOLD:
-            return False
-        # Check color intensity (at least one channel must be strong)
-        b, g, r = image[y, x, 0], image[y, x, 1], image[y, x, 2]
-        return b > COLOR_THRESHOLD or g > COLOR_THRESHOLD or r > COLOR_THRESHOLD
+        return alpha[y, x] >= ALPHA_THRESHOLD
     
     def is_solid_edge(start_y, start_x, dy, dx, count=3):
         """Check if 'count' consecutive pixels are hard edges"""
