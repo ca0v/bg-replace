@@ -2,7 +2,7 @@
 artifact: bg-replace
 phase: implementation
 depends-on: []
-references: ["bg-replace.impl"]
+references: ["bg-replace.design", "bg-replace.impl"]
 last-updated: 2025-12-22
 ---
 # Implementation Specification for bg-replace
@@ -12,6 +12,14 @@ The bg-replace module is a web-based application for automatic background remova
 
 - **backend/static/app.js** - Frontend JavaScript handling UI interactions, file uploads, and result display.
 - **backend/app.py** - Backend Flask server providing API endpoints for image processing using MediaPipe and OpenCV.
+
+## Design Requirements
+- @bg-replace.design/DES-1000: IMP-1008, IMP-1009
+- @bg-replace.design/DES-1001: IMP-1010, IMP-1011, IMP-1012, IMP-1013
+- @bg-replace.design/DES-1002: IMP-1000, IMP-1001, IMP-1002, IMP-1003, IMP-1004, IMP-1005, IMP-1006, IMP-1007
+- @bg-replace.design/DES-1003: IMP-1004, IMP-1005, IMP-1006, IMP-1009
+- @bg-replace.design/DES-1004: IMP-1008, IMP-1012
+- @bg-replace.design/DES-1005: IMP-1003, IMP-1004
 
 ## Files Summary
 ### File: backend/static/app.js
