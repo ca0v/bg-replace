@@ -19,6 +19,7 @@ const strokeWidth = document.getElementById('strokeWidth');
 const strokeWidthValue = document.getElementById('strokeWidthValue');
 const downloadBtn = document.getElementById('downloadBtn');
 const resetBtn = document.getElementById('resetBtn');
+const historyGrid = document.getElementById('historyGrid');
 
 let currentSvgContent = null;
 
@@ -59,6 +60,7 @@ fileInput.addEventListener('change', (e) => {
     }
 });
 
+// bg-replace/IMP-1000
 function handleFile(file) {
     // Validate file type
     if (!file.type.startsWith('image/')) {
@@ -85,6 +87,7 @@ function handleFile(file) {
     processImage(file);
 }
 
+// bg-replace/IMP-1001
 async function processImage(file) {
     showStatus('Processing image...', 'processing');
     
@@ -121,6 +124,7 @@ async function processImage(file) {
     }
 }
 
+// bg-replace/IMP-1002
 function displayResult(result) {
     // Hide placeholder, show result container
     resultPlaceholder.style.display = 'none';
@@ -142,9 +146,103 @@ function displayResult(result) {
     // Setup SVG once image loads
     processedImage.onload = () => {
         updateSvgOverlay();
+        addToHistory(originalImage.src, result.image);
     };
 }
 
+// bg-replace/IMP-1003
+function addToHistory(originalSrc, processedSrc) {
+    // Create container for this pair
+    const pairContainer = document.createElement('div');
+    pairContainer.className = 'history-pair';
+    
+    // Create canvas for original image
+    const originalCanvas = document.createElement('canvas');
+    originalCanvas.className = 'history-canvas';
+    const originalImg = new Image();
+    originalImg.onload = () => {
+        originalCanvas.width = originalImg.width;
+        originalCanvas.height = originalImg.height;
+        const ctx = originalCanvas.getContext('2d');
+        ctx.drawImage(originalImg, 0, 0);
+    };
+    originalImg.src = originalSrc;
+    
+    // Create canvas for processed image with SVG overlay
+    const processedCanvas = document.createElement('canvas');
+    processedCanvas.className = 'history-canvas';
+    const processedImg = new Image();
+    processedImg.onload = () => {
+        processedCanvas.width = processedImg.width;
+        processedCanvas.height = processedImg.height;
+        const ctx = processedCanvas.getContext('2d');
+        ctx.drawImage(processedImg, 0, 0);
+        
+        // Draw SVG outline on canvas
+        if (currentSvgContent) {
+            drawSvgOnCanvas(ctx, processedCanvas.width, processedCanvas.height);
+        }
+    };
+    processedImg.src = processedSrc;
+    
+    // Add canvases to pair container
+    pairContainer.appendChild(originalCanvas);
+    pairContainer.appendChild(processedCanvas);
+    
+    // Prepend to history grid
+    historyGrid.prepend(pairContainer);
+}
+
+// bg-replace/IMP-1004
+function drawSvgOnCanvas(ctx, width, height) {
+    if (!currentSvgContent) return;
+    
+    // Parse SVG to extract polygon points
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(currentSvgContent, 'image/svg+xml');
+    const polygon = svgDoc.querySelector('polygon');
+    const circles = svgDoc.querySelectorAll('circle');
+    
+    if (!polygon) return;
+    
+    // Get polygon points (normalized 0-100)
+    const pointsAttr = polygon.getAttribute('points');
+    const points = pointsAttr.split(' ').map(p => {
+        const [x, y] = p.split(',').map(Number);
+        return {
+            x: (x / 100) * width,
+            y: (y / 100) * height
+        };
+    });
+    
+    // Draw polygon
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = strokeColor.value;
+    ctx.lineWidth = parseFloat(strokeWidth.value);
+    ctx.stroke();
+    
+    // Draw circles (vertices)
+    circles.forEach(circle => {
+        const cx = (parseFloat(circle.getAttribute('cx')) / 100) * width;
+        const cy = (parseFloat(circle.getAttribute('cy')) / 100) * height;
+        const r = (1.5 / 100) * Math.min(width, height);
+        
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 0.3;
+        ctx.stroke();
+    });
+}
+
+// bg-replace/IMP-1005
 function updateSvgOverlay() {
     if (!currentSvgContent) return;
     
@@ -172,6 +270,7 @@ function updateSvgOverlay() {
     applyOverlayStyles();
 }
 
+// bg-replace/IMP-1006
 function applyOverlayStyles() {
     const polygon = svgOverlay.querySelector('polygon');
     const circles = svgOverlay.querySelectorAll('circle');
@@ -232,6 +331,7 @@ resetBtn.addEventListener('click', () => {
     fileInput.value = '';
 });
 
+// bg-replace/IMP-1007
 function showStatus(message, type) {
     status.textContent = message;
     status.className = `status ${type}`;

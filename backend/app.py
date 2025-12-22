@@ -21,6 +21,7 @@ CORS(app)
 mp_selfie_segmentation = mp.solutions.selfie_segmentation
 segmenter = mp_selfie_segmentation.SelfieSegmentation(model_selection=1)
 
+# bg-replace/IMP-1008
 def remove_background(image_bytes):
     """Remove background from image bytes using MediaPipe"""
     # Load image
@@ -46,6 +47,7 @@ def remove_background(image_bytes):
     
     return output_buffer.getvalue(), img_rgba
 
+# bg-replace/IMP-1009
 def detect_edges(image_array, epsilon_factor=0.002):
     """
     Detect edges using directional scanning (left and right)
@@ -125,16 +127,19 @@ def detect_edges(image_array, epsilon_factor=0.002):
     
     return svg_content
 
+# bg-replace/IMP-1010
 @app.route('/')
 def index():
     """Serve the main application page"""
     return send_from_directory('static', 'index.html')
 
+# bg-replace/IMP-1011
 @app.route('/static/<path:path>')
 def serve_static(path):
     """Serve static files"""
     return send_from_directory('static', path)
 
+# bg-replace/IMP-1012
 @app.route('/api/process', methods=['POST'])
 def process_image():
     """
@@ -172,6 +177,7 @@ def process_image():
         print(f"Error processing image: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+# bg-replace/IMP-1013
 @app.route('/health')
 def health():
     """Health check endpoint"""
