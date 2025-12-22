@@ -34,6 +34,18 @@ The bg-replace module is a web-based application for automatic background remova
 - **Interfaces**: None
 - **Other Elements**: Functions for image processing and Flask route handlers.
 
+### File: backend/static/index.html
+- **Purpose**: Main HTML page providing the user interface for image upload, display, and controls.
+- **Classes**: None
+- **Interfaces**: None
+- **Other Elements**: HTML elements for drop zone, images, controls, status, and history grid.
+
+### File: backend/static/styles.css
+- **Purpose**: CSS styles for the application's layout, appearance, and responsive design.
+- **Classes**: None
+- **Interfaces**: None
+- **Other Elements**: CSS rules for containers, images, controls, status messages, and history grid.
+
 ## Classes
 None
 
@@ -188,5 +200,14 @@ None
 ## Notes
 - The application runs on Flask development server.
 - SVG overlays are interactive with color and width controls.
-- History feature allows previewing multiple processed images.</content>
+- History feature allows previewing multiple processed images.
+
+## Build and Run Instructions
+- Ensure Python 3.8+ is installed.
+- Activate the virtual environment if available (e.g., `source bust_env/bin/activate`).
+- Install dependencies: `pip install flask flask-cors opencv-python mediapipe pillow numpy`.
+- Navigate to the backend directory: `cd codegen/backend`.
+- Run the application: `python3 app.py`.
+- Access the web interface at `http://localhost:5000`.
+- Test the health endpoint: `curl http://localhost:5000/health` (should return `{"status": "healthy"}`).</content>
 <parameter name="filePath">/home/ca0v/code/bg-replace/specs/implementation/@bg-replace.impl
